@@ -47,6 +47,11 @@ class Vraag
      */
     private $puntenMei;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $puntenTenI;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +125,18 @@ class Vraag
     public function setPuntenMei(int $puntenMei): self
     {
         $this->puntenMei = $puntenMei;
+
+        return $this;
+    }
+
+    public function getPuntenTenI(): ?int
+    {
+        return $this->puntenTenI;
+    }
+
+    public function setPuntenTenI(int $puntenTenI): self
+    {
+        $this->puntenTenI = $puntenTenI;
 
         return $this;
     }
