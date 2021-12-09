@@ -74,6 +74,13 @@
       <excludeFolder url="file://$MODULE_DIR$/kieswijzerApi1.0/vendor/doctrine/common" />
       <excludeFolder url="file://$MODULE_DIR$/kieswijzerApi1.0/vendor/doctrine/annotations" />
       <excludeFolder url="file://$MODULE_DIR$/kieswijzerApi1.0/vendor/doctrine/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/kieswijzerApi1.0/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/kieswijzerApi1.0/vendor/symfony/serializer" />
+      <excludeFolder url="file://$MODULE_DIR$/kieswijzerApi1.0/vendor/symfony/property-info" />
+      <excludeFolder url="file://$MODULE_DIR$/kieswijzerApi1.0/vendor/phpdocumentor/reflection-common" />
+      <excludeFolder url="file://$MODULE_DIR$/kieswijzerApi1.0/vendor/phpdocumentor/reflection-docblock" />
+      <excludeFolder url="file://$MODULE_DIR$/kieswijzerApi1.0/vendor/phpdocumentor/type-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/kieswijzerApi1.0/vendor/nelmio/cors-bundle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use App\Repository\VraagRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Internal\TentativeType;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @ORM\Entity(repositoryClass=VraagRepository::class)
  */
-class Vraag
+class Vraag implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -139,5 +141,19 @@ class Vraag
         $this->puntenTenI = $puntenTenI;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id'=> $this->id,
+            'vraag' => $this->vraag,
+            'juisteAntwoord' => $this->juisteAntwoord,
+            'puntenIct' => $this->puntenIct,
+            'puntenAenM' => $this->puntenAenM,
+            'puntenBenI' => $this->puntenBenI,
+            'puntenMei' => $this->puntenMei,
+            'puntenTenI' => $this->puntenTenI,
+        ];
     }
 }
