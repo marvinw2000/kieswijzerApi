@@ -30,9 +30,40 @@ class SecurityController extends AbstractController
     /**
      * @Route("/createQuestion", name="createQuestion" methods={"get"})
      */
-    public function createQuestion()
+    public function createQuestion(Request $request)
     {
 
+        //Entity manager wordt aangeroepen.
+        $em = $this->getDoctrine()->getManager();
+
+        //content wordt van JSON naar PHP object geconverteerd.
+        $data = json_decode($request->getContent(), true);
+
+        //Hier wordt de nieuwe vraag aangemaakt
+        $nieuweVraag = new Vraag();
+        $nieuweVraag->setVraag($data['Vraag']);
+        $nieuweVraag->setJuisteAntwoord($data['JuisteAntwoord']);
+        $nieuweVraag->setPuntenIct($data['puntenIct']);
+        $nieuweVraag->setPuntenAenM()($data['puntenAenM']);
+        $nieuweVraag->setPuntenBenI($data['puntenBenI']);
+        $nieuweVraag->setPuntenMei($data['puntenMei']);
+        $nieuweVraag->setPuntenTenI($data['puntenTenI']);
+
+        //de nieuwe vraag is aangegeven als object.
+        $em->persist($nieuweVraag);
+
+        //de wijzigingen worden uitgevoerd in DB
+        $em->flush();
+
+
+        $response = new JsonResponse(
+            [
+                'addedQuestion' => 'ok',
+            ],
+            JsonResponse::HTTP_CREATED
+        );
+
+        return $response;
 
     }
 
