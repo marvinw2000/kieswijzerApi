@@ -27,4 +27,32 @@ class SecurityController extends AbstractController
         return $response;
     }
 
+    /**
+     * @Route("/createQuestion", name="createQuestion" methods={"get"})
+     */
+    public function createQuestion()
+    {
+
+
+    }
+
+    /**
+     * @Route("/updateQuestion", name="updateQuestion" methods={"get"})
+     */
+    public function updateQuestion()
+    {
+
+    }
+
+
+    /**
+     * @Route("/deleteQuestion", name="deleteQuestion" methods={"get"})
+     */
+    public function deleteQuestion()
+    {
+
+    }
+
+
+
 }
