@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/createQuestion", name="createQuestion" methods={"get"})
+     * @Route("/createQuestion", name="createQuestion" methods={"post"})
      */
     public function createQuestion(Request $request)
     {
@@ -68,7 +68,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/updateQuestion", name="updateQuestion" methods={"get"})
+     * @Route("/updateQuestion", name="updateQuestion" methods={"update"})
      */
     public function updateQuestion()
     {
@@ -77,10 +77,26 @@ class SecurityController extends AbstractController
 
 
     /**
-     * @Route("/deleteQuestion", name="deleteQuestion" methods={"get"})
+     * @Route("/deleteQuestion", name="deleteQuestion" methods={"delete"})
      */
-    public function deleteQuestion()
+    public function deleteQuestion(Request $request, $id)
     {
+        //Entity manager wordt aangeroepen.
+        $em = $this->getDoctrine()->getManager();
+
+        //data wordt opgehaald uit Vraag entiteit met id
+        $data = $em->getRepository(Vraag::class)->find($id);
+
+        //data wordt verwijderd
+        $em->remove($data);
+
+        //de wijziging wordt gestuurd naar de DB
+        $em->flush();
+
+        //Er wordt een nieuwe response aangemaakt. PHP object wordt omgezet naar JSON
+        $response = new Response(json_encode($data));
+        $response->send();
+
 
     }
 
