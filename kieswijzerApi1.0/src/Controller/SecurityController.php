@@ -93,8 +93,8 @@ class SecurityController extends AbstractController
         //de wijziging wordt gestuurd naar de DB
         $em->flush();
 
-        //Er wordt een nieuwe response aangemaakt. PHP object wordt omgezet naar JSON
-        $response = new Response(json_encode($data));
+        //Er wordt een nieuwe response aangemaakt.
+        $response = new Response(json_decode($data));
         $response->send();
 
 
