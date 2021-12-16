@@ -50,5 +50,44 @@ class SecurityController extends AbstractController
         return $response;
     }
 
+    /**
+     * @Route("/createQuestion", name="createQuestion")
+     */
+    public function createQuestion(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $vraag = new Vraag();
+        $vraag->setVraag($data["vraag"]);
+        $vraag->setJuisteAntwoord($data["juisteAntwoord"]);
+        $vraag->setPuntenIct($data["puntenIct"]);
+        $vraag->setPuntenAenM($data["puntenAenM"]);
+        $vraag->setPuntenBenI($data["puntenBenI"]);
+        $vraag->setPuntenMei($data["puntenMei"]);
+        $vraag->setPuntenTenI($data["puntenTenI"]);
+
+        //entity manager wordt aangeroepen
+        $em = $this->getDoctrine()->getManager();
+
+        //data wordt
+        $em->persist($vraag);
+
+        //de actie wordt doorgevoerd in de DB
+        $em->flush();
+
+        //er wordt een nieuwe response aangemaakt.
+        $response = new JsonResponse(
+            [
+                'addedQuestion' => 'ok',
+            ],
+            JsonResponse::HTTP_CREATED
+        );
+
+
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
+    }
+
 
 }
