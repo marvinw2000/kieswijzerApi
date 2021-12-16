@@ -16,7 +16,7 @@ class SecurityController extends AbstractController
 {
 
     /**
-     * @Route("/getAllQuestions", name="getAllQuestions" methods={"get"})
+     * @Route("/getAllQuestions", name="getAllQuestions")
      */
     public function getAllQuestions()
     {
@@ -28,78 +28,27 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/createQuestion", name="createQuestion" methods={"post"})
+     * @Route("/deleteQuestion/{id}", name="deleteQuestion")
      */
-    public function createQuestion(Request $request)
+    public function deleteQuestion($id)
     {
-
-        //Entity manager wordt aangeroepen.
+        //entity manager wordt aangeroepen
         $em = $this->getDoctrine()->getManager();
 
-        //content wordt van JSON naar PHP object geconverteerd.
-        $data = json_decode($request->getContent(), true);
-
-        //Hier wordt de nieuwe vraag aangemaakt
-        $nieuweVraag = new Vraag();
-        $nieuweVraag->setVraag($data['Vraag']);
-        $nieuweVraag->setJuisteAntwoord($data['JuisteAntwoord']);
-        $nieuweVraag->setPuntenIct($data['puntenIct']);
-        $nieuweVraag->setPuntenAenM()($data['puntenAenM']);
-        $nieuweVraag->setPuntenBenI($data['puntenBenI']);
-        $nieuweVraag->setPuntenMei($data['puntenMei']);
-        $nieuweVraag->setPuntenTenI($data['puntenTenI']);
-
-        //de nieuwe vraag is aangegeven als object.
-        $em->persist($nieuweVraag);
-
-        //de wijzigingen worden uitgevoerd in DB
-        $em->flush();
-
-
-        $response = new JsonResponse(
-            [
-                'addedQuestion' => 'ok',
-            ],
-            JsonResponse::HTTP_CREATED
-        );
-
-        return $response;
-
-    }
-
-    /**
-     * @Route("/updateQuestion", name="updateQuestion" methods={"update"})
-     */
-    public function updateQuestion()
-    {
-
-    }
-
-
-    /**
-     * @Route("/deleteQuestion", name="deleteQuestion" methods={"delete"})
-     */
-    public function deleteQuestion(Request $request, $id)
-    {
-        //Entity manager wordt aangeroepen.
-        $em = $this->getDoctrine()->getManager();
-
-        //data wordt opgehaald uit Vraag entiteit met id
+        //de id wordt opgehaald met ->finf($id)
         $data = $em->getRepository(Vraag::class)->find($id);
 
         //data wordt verwijderd
         $em->remove($data);
 
-        //de wijziging wordt gestuurd naar de DB
+        //de actie wordt doorgevoerd in de DB
         $em->flush();
 
-        //Er wordt een nieuwe response aangemaakt.
-        $response = new Response(json_decode($data));
-        $response->send();
-
-
+        //er wordt een nieuwe response aangemaakt.
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
-
 
 
 }
