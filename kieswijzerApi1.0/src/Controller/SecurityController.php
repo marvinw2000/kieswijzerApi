@@ -26,4 +26,27 @@ class SecurityController extends AbstractController
         return $response;
     }
 
+    /**
+     * @Route("/deleteQuestion/{id}", name="deleteQuestion")
+     */
+    public function deleteQuestion($id)
+    {
+        //entity manager wordt aangeroepen
+        $em = $this->getDoctrine()->getManager();
+
+        //de id wordt opgehaald met ->finf($id)
+        $data = $em->getRepository(Vraag::class)->find($id);
+
+        //data wordt verwijderd
+        $em->remove($data);
+
+        //de actie wordt doorgevoerd in de DB
+        $em->flush();
+
+        //er wordt een nieuwe response aangemaakt.
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
 }
