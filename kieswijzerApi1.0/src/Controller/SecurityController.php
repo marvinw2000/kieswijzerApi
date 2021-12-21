@@ -84,4 +84,36 @@ class SecurityController extends AbstractController
         return $response;
     }
 
+         /**
+         * @Route("/updateQuestion/{id}", name="update_question")
+         */
+    public function update($id)
+    {
+
+        //entity manager wordt aangeroepen
+        $em = $this->getDoctrine()->getManager();
+        //de id wordt opgehaald met ->finf($id)
+        $data = $em->getRepository(Vraag::class)->find($id);
+
+
+        if (is_null($data)) {
+            throw $this->createNotFoundException('Geen vraag gevonden met id: ' . $id);
+        }
+
+        $data->setVraag('');
+//        $data->setJuisteAntwoord('');
+//        $data->setPuntenIct('');
+//        $data->setPuntenAenM('');
+//        $data->setPuntenBenI('');
+//        $data->setPuntenMei('');
+//        $data->setPuntenTenI('');
+
+        $em->flush();
+
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
+    }
+
 }
