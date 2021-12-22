@@ -87,7 +87,7 @@ class SecurityController extends AbstractController
          /**
          * @Route("/updateQuestion/{id}", name="update_question")
          */
-    public function update($id)
+    public function update($id, Request $request)
     {
 
         //entity manager wordt aangeroepen
@@ -95,18 +95,16 @@ class SecurityController extends AbstractController
         //de id wordt opgehaald met ->finf($id)
         $data = $em->getRepository(Vraag::class)->find($id);
 
+        //$dataVragen = json_decode($request->getContent(),true);
+
 
         if (is_null($data)) {
             throw $this->createNotFoundException('Geen vraag gevonden met id: ' . $id);
         }
 
-        $data->setVraag('');
-//        $data->setJuisteAntwoord('');
-//        $data->setPuntenIct('');
-//        $data->setPuntenAenM('');
-//        $data->setPuntenBenI('');
-//        $data->setPuntenMei('');
-//        $data->setPuntenTenI('');
+
+        $data->setVraag('vraag');
+
 
         $em->flush();
 
