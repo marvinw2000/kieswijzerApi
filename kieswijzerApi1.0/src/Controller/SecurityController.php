@@ -83,5 +83,26 @@ class SecurityController extends AbstractController
         $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }
+    /**
+     * @Route("/updateQuestion/{id}", name="updateQuestion")
+     */
+    public function updateAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $vraag = $em->getRepository(Vraag::class)->find($id);
+        $vraag->setVraag('Test');
+        $em->flush();
+
+        $response = new JsonResponse(
+            [
+                'vraagUpdated' => 'ok',
+            ],
+            JsonResponse::HTTP_CREATED
+        );
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
+
+    }
 
 }
