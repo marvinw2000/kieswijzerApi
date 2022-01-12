@@ -33,7 +33,7 @@ class SecurityController extends AbstractController
     {
         //entity manager wordt aangeroepen
         $em = $this->getDoctrine()->getManager();
-        //de id wordt opgehaald met ->finf($id)
+        //de id wordt opgehaald met ->find($id)
         $data = $em->getRepository(Vraag::class)->find($id);
         //data wordt verwijderd
         $em->remove($data);
@@ -84,18 +84,28 @@ class SecurityController extends AbstractController
         return $response;
     }
     /**
-     * @Route("/updateQuestion/{id}", name="updateQuestion")
+     * @Route("/updateQuestion/{id}", name="updateQuestion", methods={"post"})
      */
-    public function updateAction($id)
+    public function updateAction($id ,Request $request)
     {
+        $data = json_decode($request->getContent(),true);
         $em = $this->getDoctrine()->getManager();
         $vraag = $em->getRepository(Vraag::class)->find($id);
-        $vraag->setVraag('Test');
+
+        $vraag->setVraag($data['currentQuestion']);
+//        $vraag->setJuistenAntwoord($data['currentCorectAnswer']);
+        $vraag->setPuntenIct(number_format($data['currentPointsIct']));
+        $vraag->setPuntenAenM(number_format($data['currentPointsAenM']));
+        $vraag->setPuntenBenI(number_format($data['currentPointsBenI']));
+        $vraag->setPuntenMei(number_format($data['currentPointsMei']));
+        $vraag->setPuntenTenI(number_format($data['currentPointsTenI']));
+
         $em->flush();
 
         $response = new JsonResponse(
             [
                 'vraagUpdated' => 'ok',
+                'data' => $data
             ],
             JsonResponse::HTTP_CREATED
         );
