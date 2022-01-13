@@ -91,9 +91,8 @@ class SecurityController extends AbstractController
         $data = json_decode($request->getContent(),true);
         $em = $this->getDoctrine()->getManager();
         $vraag = $em->getRepository(Vraag::class)->find($id);
-
         $vraag->setVraag($data['currentQuestion']);
-//        $vraag->setJuistenAntwoord($data['currentCorectAnswer']);
+        //$vraag->setJuistenAntwoord(0);
         $vraag->setPuntenIct(number_format($data['currentPointsIct']));
         $vraag->setPuntenAenM(number_format($data['currentPointsAenM']));
         $vraag->setPuntenBenI(number_format($data['currentPointsBenI']));
