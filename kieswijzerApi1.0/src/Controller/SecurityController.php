@@ -51,10 +51,20 @@ class SecurityController extends AbstractController
     public function createQuestion(Request $request)
     {
         $data = json_decode($request->getContent(), true);
+        $inputAnswer = strtolower($data['juisteAntwoord']);
+        $inputAnswerTrimed = str_replace(' ', '', $inputAnswer);
+        if ($inputAnswerTrimed === 'false')
+        {
+            $boolean = 0;
+        }
+        if ($inputAnswerTrimed === 'true')
+        {
+            $boolean = 1;
+        }
 
         $vraag = new Vraag();
         $vraag->setVraag($data["vraag"]);
-        $vraag->setJuisteAntwoord($data["juisteAntwoord"]);
+        $vraag->setJuisteAntwoord($boolean);
         $vraag->setPuntenIct($data["puntenIct"]);
         $vraag->setPuntenAenM($data["puntenAenM"]);
         $vraag->setPuntenBenI($data["puntenBenI"]);
@@ -92,19 +102,19 @@ class SecurityController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $vraag = $em->getRepository(Vraag::class)->find($id);
         $vraag->setVraag($data['currentQuestion']);
-        //$vraag->setJuistenAntwoord(0);
+        $vraag->setJuisteAntwoord($data["corectAnswer"]);
         $vraag->setPuntenIct(number_format($data['currentPointsIct']));
         $vraag->setPuntenAenM(number_format($data['currentPointsAenM']));
         $vraag->setPuntenBenI(number_format($data['currentPointsBenI']));
         $vraag->setPuntenMei(number_format($data['currentPointsMei']));
         $vraag->setPuntenTenI(number_format($data['currentPointsTenI']));
-
         $em->flush();
 
         $response = new JsonResponse(
             [
                 'vraagUpdated' => 'ok',
-                'data' => $data
+                'data' => $data["corectAnswer"]
+
             ],
             JsonResponse::HTTP_CREATED
         );
