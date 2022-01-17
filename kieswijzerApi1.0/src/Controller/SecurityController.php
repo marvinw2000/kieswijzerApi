@@ -33,7 +33,7 @@ class SecurityController extends AbstractController
     {
         //entity manager wordt aangeroepen
         $em = $this->getDoctrine()->getManager();
-        //de id wordt opgehaald met ->finf($id)
+        //de id wordt opgehaald met ->find($id)
         $data = $em->getRepository(Vraag::class)->find($id);
         //data wordt verwijderd
         $em->remove($data);
@@ -51,10 +51,20 @@ class SecurityController extends AbstractController
     public function createQuestion(Request $request)
     {
         $data = json_decode($request->getContent(), true);
+        $inputAnswer = strtolower($data['juisteAntwoord']);
+        $inputAnswerTrimed = str_replace(' ', '', $inputAnswer);
+        if ($inputAnswerTrimed === 'false')
+        {
+            $boolean = 0;
+        }
+        if ($inputAnswerTrimed === 'true')
+        {
+            $boolean = 1;
+        }
 
         $vraag = new Vraag();
         $vraag->setVraag($data["vraag"]);
-        $vraag->setJuisteAntwoord($data["juisteAntwoord"]);
+        $vraag->setJuisteAntwoord($boolean);
         $vraag->setPuntenIct($data["puntenIct"]);
         $vraag->setPuntenAenM($data["puntenAenM"]);
         $vraag->setPuntenBenI($data["puntenBenI"]);
@@ -83,16 +93,35 @@ class SecurityController extends AbstractController
         $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }
-    /**
-     * @Route("/login", name="app_login" )
+
+     /**
+      * @Route("/updateQuestion/{id}", name="updateQuestion", methods={"post"})
      */
-    public function login():Response
+    public function updateAction($id ,Request $request)
     {
+        $data = json_decode($request->getContent(),true);
+        $em = $this->getDoctrine()->getManager();
+        $vraag = $em->getRepository(Vraag::class)->find($id);
+        $vraag->setVraag($data['currentQuestion']);
+        $vraag->setJuisteAntwoord($data["corectAnswer"]);
+        $vraag->setPuntenIct(number_format($data['currentPointsIct']));
+        $vraag->setPuntenAenM(number_format($data['currentPointsAenM']));
+        $vraag->setPuntenBenI(number_format($data['currentPointsBenI']));
+        $vraag->setPuntenMei(number_format($data['currentPointsMei']));
+        $vraag->setPuntenTenI(number_format($data['currentPointsTenI']));
+        $em->flush();
 
+        $response = new JsonResponse(
+            [
+                'vraagUpdated' => 'ok',
+                'data' => $data["corectAnswer"]
 
+            ],
+            JsonResponse::HTTP_CREATED
+        );
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
 
-       return $this->render("");
     }
-
-
 }
