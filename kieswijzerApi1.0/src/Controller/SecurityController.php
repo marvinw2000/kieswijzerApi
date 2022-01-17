@@ -61,7 +61,6 @@ class SecurityController extends AbstractController
         {
             $boolean = 1;
         }
-
         $vraag = new Vraag();
         $vraag->setVraag($data["vraag"]);
         $vraag->setJuisteAntwoord($boolean);
