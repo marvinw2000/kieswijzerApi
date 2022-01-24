@@ -15,6 +15,37 @@ use Doctrine\ORM\EntityManagerInterface;
 class SecurityController extends AbstractController
 {
     /**
+     * @Route("/login", name="login")
+     */
+    public function login(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+        $repository = $em->getRepository(Beheerder::class);
+        $inputGebruikersNaam = $data['inputGebruikersNaam'];
+        $inputWachtwoord = $data['inputWachtwoord'];
+
+        $gebruikerData = $repository->findOneBy(['gebruikersNaam'=> $inputGebruikersNaam]);
+
+        if ($inputWachtwoord == $gebruikerData->getPassword()){
+            $result = 'login suc6';
+            $role = $gebruikerData->getRoles();
+        }else{
+            $result = 'login mislukt';
+        }
+
+        $response = new JsonResponse(
+            [
+                'role' => $role[0],
+            ],
+            JsonResponse::HTTP_CREATED
+        );
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
+    }
+
+    /**
      * @Route("/getAllQuestions", name="getAllQuestions" )
      */
     public function getAllQuestions()
@@ -86,8 +117,6 @@ class SecurityController extends AbstractController
             ],
             JsonResponse::HTTP_CREATED
         );
-
-
         $response->headers->set('Content-Type', 'application/json');
         $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;

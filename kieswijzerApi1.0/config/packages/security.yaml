@@ -1,5 +1,5 @@
 security:
-    enable_authenticator_manager: true
+
     encoders:
         App\Entity\Beheerder:
             algorithm: auto

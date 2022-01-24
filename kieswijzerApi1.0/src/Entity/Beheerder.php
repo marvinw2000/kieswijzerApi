@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=BeheerderRepository::class)
  */
-class Beheerder implements UserInterface
+class Beheerder implements UserInterface, \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -113,5 +113,15 @@ class Beheerder implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function jsonSerialize()
+    {
+        return[
+            'id'=> $this->id,
+            'gebruikersNaam' => $this->gebruikersNaam,
+            'roles' => $this->roles,
+            'password' => $this->password,
+        ];
     }
 }
