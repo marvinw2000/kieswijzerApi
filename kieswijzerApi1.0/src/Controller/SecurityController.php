@@ -24,7 +24,7 @@ class SecurityController extends AbstractController
         $repository = $em->getRepository(Beheerder::class);
         $inputGebruikersNaam = $data['inputGebruikersNaam'];
         $inputWachtwoord = $data['inputWachtwoord'];
-
+        //$inputWachtwoord = password_hash($data['inputWachtwoord'], DEFAULT_PASSWORD);
         $gebruikerData = $repository->findOneBy(['gebruikersNaam'=> $inputGebruikersNaam]);
 
         if ($inputWachtwoord === $gebruikerData->getPassword()) {

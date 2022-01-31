@@ -34,6 +34,11 @@ class Beheerder implements UserInterface, \JsonSerializable
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $image;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -123,5 +128,17 @@ class Beheerder implements UserInterface, \JsonSerializable
             'roles' => $this->roles,
             'password' => $this->password,
         ];
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
     }
 }
