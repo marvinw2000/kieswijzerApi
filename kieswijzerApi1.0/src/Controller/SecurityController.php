@@ -27,13 +27,9 @@ class SecurityController extends AbstractController
 
         $gebruikerData = $repository->findOneBy(['gebruikersNaam'=> $inputGebruikersNaam]);
 
-        if ($inputWachtwoord == $gebruikerData->getPassword()){
-            $result = 'login suc6';
+        if ($inputWachtwoord === $gebruikerData->getPassword()) {
             $role = $gebruikerData->getRoles();
-        }else{
-            $result = 'login mislukt';
         }
-
         $response = new JsonResponse(
             [
                 'role' => $role[0],
