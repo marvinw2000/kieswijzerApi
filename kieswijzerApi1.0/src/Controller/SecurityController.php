@@ -71,6 +71,25 @@ class SecurityController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+    /**
+     * @Route("/savePicture", name="savePicture")
+     */
+    public function savePicture(Request $request){
+        $data = $request->getContent();
+        dd($data);
+        //dd($_FILES);
+        //$destination = $this->getParameter('kernel.project_dir').'/public/uploads';
+        //$data->move($destination);
+        $response = new JsonResponse(
+            [
+                'picture saved' => 'ok',
+            ],
+            JsonResponse::HTTP_CREATED
+        );
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
+    }
 
     /**
      * @Route("/createQuestion", name="createQuestion")
