@@ -96,7 +96,7 @@ class SecurityController extends AbstractController
         $vraag->setPuntenBenI($data["puntenBenI"]);
         $vraag->setPuntenMei($data["puntenMei"]);
         $vraag->setPuntenTenI($data["puntenTenI"]);
-
+        $vraag->setImage($data["naamImg"]);
         //entity manager wordt aangeroepen
         $em = $this->getDoctrine()->getManager();
 
