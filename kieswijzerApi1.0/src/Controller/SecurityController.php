@@ -74,12 +74,15 @@ class SecurityController extends AbstractController
     /**
      * @Route("/savePicture", name="savePicture")
      */
-    public function savePicture(Request $request){
-        $data = $request->getContent();
-        dd($data);
+    public function savePicture(){
         //dd($_FILES);
-        //$destination = $this->getParameter('kernel.project_dir').'/public/uploads';
-        //$data->move($destination);
+        //dd($destination);
+
+        $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
+        $tmp_name = $_FILES["uploadfile"]["tmp_name"];
+        $name = basename($_FILES["uploadfile"]["name"]);
+        move_uploaded_file($tmp_name, "$destination/$name");
+
         $response = new JsonResponse(
             [
                 'picture saved' => 'ok',
