@@ -147,7 +147,17 @@ class Vraag implements \JsonSerializable
 
         return $this;
     }
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
 
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
     public function jsonSerialize()
     {
         return [
@@ -159,18 +169,7 @@ class Vraag implements \JsonSerializable
             'puntenBenI' => $this->puntenBenI,
             'puntenMei' => $this->puntenMei,
             'puntenTenI' => $this->puntenTenI,
+            'image' => $this->image,
         ];
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
-
-        return $this;
     }
 }

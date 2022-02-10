@@ -40,7 +40,6 @@ class SecurityController extends AbstractController
         $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }
-
     /**
      * @Route("/getAllQuestions", name="getAllQuestions" )
      */
@@ -52,7 +51,6 @@ class SecurityController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
-
     /**
      * @Route("/deleteQuestion/{id}", name="deleteQuestion" )
      */
@@ -93,7 +91,6 @@ class SecurityController extends AbstractController
         $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }
-
     /**
      * @Route("/createQuestion", name="createQuestion")
      */
