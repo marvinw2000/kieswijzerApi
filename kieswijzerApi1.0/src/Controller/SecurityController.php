@@ -19,6 +19,7 @@ class SecurityController extends AbstractController
      */
     public function login(Request $request)
     {
+        //entity manager ophalen
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent(), true);
         $repository = $em->getRepository(Beheerder::class);
@@ -45,6 +46,7 @@ class SecurityController extends AbstractController
      */
     public function getAllQuestions()
     {
+        //entity manager ophalen
         $em = $this->getDoctrine()->getManager();
         $data = $em->getRepository(Vraag::class)->findAll();
         $response = new Response(json_encode($data));
@@ -73,9 +75,6 @@ class SecurityController extends AbstractController
      * @Route("/savePicture", name="savePicture")
      */
     public function savePicture(){
-        //dd($_FILES);
-        //dd($destination);
-
         $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
         $tmp_name = $_FILES["uploadfile"]["tmp_name"];
         $name = basename($_FILES["uploadfile"]["name"]);
@@ -172,29 +171,18 @@ class SecurityController extends AbstractController
          */
     public function update($id, Request $request)
     {
-
         //entity manager wordt aangeroepen
         $em = $this->getDoctrine()->getManager();
         //de id wordt opgehaald met ->finf($id)
         $data = $em->getRepository(Vraag::class)->find($id);
-
-        //$dataVragen = json_decode($request->getContent(),true);
-
-
         if (is_null($data)) {
             throw $this->createNotFoundException('Geen vraag gevonden met id: ' . $id);
         }
-
-
         $data->setVraag('vraag');
-
-
         $em->flush();
-
         $response = new Response(json_encode($data));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
-
     }
 
 }
