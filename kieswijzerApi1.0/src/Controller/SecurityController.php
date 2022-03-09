@@ -28,12 +28,14 @@ class SecurityController extends AbstractController
         //$inputWachtwoord = password_hash($data['inputWachtwoord'], DEFAULT_PASSWORD);
         $gebruikerData = $repository->findOneBy(['gebruikersNaam'=> $inputGebruikersNaam]);
 
-        if ($inputWachtwoord === $gebruikerData->getPassword()) {
+        if ($inputWachtwoord === $gebruikerData->getPassword()){
             $role = $gebruikerData->getRoles();
+            $name = $gebruikerData->getGebruikersNaam();
         }
         $response = new JsonResponse(
             [
                 'role' => $role[0],
+                'name' => $name,
             ],
             JsonResponse::HTTP_CREATED
         );
