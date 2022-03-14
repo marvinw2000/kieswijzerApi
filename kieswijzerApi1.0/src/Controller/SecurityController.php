@@ -15,6 +15,27 @@ use Doctrine\ORM\EntityManagerInterface;
 class SecurityController extends AbstractController
 {
     /**
+     * @Route("/findUser/{name}", name="findUser" )
+     */
+    public function findUser($name)
+    {
+        //entity manager ophalen
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(Beheerder::class);
+        $gebruikerData = $repository->findOneBy(['gebruikersNaam'=> $name]);
+
+        $password = $gebruikerData->getPassword();
+        $response = new JsonResponse(
+            [
+                'password' => $password,
+            ],
+            JsonResponse::HTTP_CREATED
+        );
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
+    }
+    /**
      * @Route("/login", name="login")
      */
     public function login(Request $request)
@@ -186,5 +207,7 @@ class SecurityController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+
+
 
 }
