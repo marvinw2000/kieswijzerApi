@@ -24,9 +24,13 @@ class SecurityController extends AbstractController
         $repository = $em->getRepository(Beheerder::class);
         $gebruikerData = $repository->findOneBy(['gebruikersNaam'=> $name]);
 
+        $id = $gebruikerData->getId();
+        $gebruikersNaam = $gebruikerData->getgebruikersNaam();
         $password = $gebruikerData->getPassword();
         $response = new JsonResponse(
             [
+                'id' => $id,
+                'username' => $gebruikersNaam,
                 'password' => $password,
             ],
             JsonResponse::HTTP_CREATED
@@ -35,6 +39,31 @@ class SecurityController extends AbstractController
         $response->headers->set('Access-Control-Allow-Origin', '*');
         return $response;
     }
+    /**
+     * @Route("/updateUser/{id}", name="updateUser", methods={"post"})
+     */
+    public function updateUser($id ,Request $request)
+    {
+        $data = json_decode($request->getContent(),true);
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(Beheerder::class)->find($id);
+        $user->setgebruikersNaam($data['inputUsername']);
+        $user->setpassword($data['inputPassword']);
+        $em->flush();
+
+        $response = new JsonResponse(
+            [
+                'userUpdated' => 'ok'
+            ],
+            JsonResponse::HTTP_CREATED
+        );
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
+
+    }
+
+
     /**
      * @Route("/login", name="login")
      */
@@ -188,26 +217,4 @@ class SecurityController extends AbstractController
         return $response;
 
     }
-
-         /**
-         * @Route("/updateQuestion/{id}", name="update_question")
-         */
-    public function update($id, Request $request)
-    {
-        //entity manager wordt aangeroepen
-        $em = $this->getDoctrine()->getManager();
-        //de id wordt opgehaald met ->finf($id)
-        $data = $em->getRepository(Vraag::class)->find($id);
-        if (is_null($data)) {
-            throw $this->createNotFoundException('Geen vraag gevonden met id: ' . $id);
-        }
-        $data->setVraag('vraag');
-        $em->flush();
-        $response = new Response(json_encode($data));
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-    }
-
-
-
 }
