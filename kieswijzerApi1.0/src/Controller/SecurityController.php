@@ -24,11 +24,13 @@ class SecurityController extends AbstractController
         $repository = $em->getRepository(Beheerder::class);
         $gebruikerData = $repository->findOneBy(['gebruikersNaam'=> $name]);
 
+        $role = $gebruikerData->getRoles();
         $id = $gebruikerData->getId();
         $gebruikersNaam = $gebruikerData->getgebruikersNaam();
         $password = $gebruikerData->getPassword();
         $response = new JsonResponse(
             [
+                'role'=> $role,
                 'id' => $id,
                 'username' => $gebruikersNaam,
                 'password' => $password,
